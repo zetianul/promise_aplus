@@ -44,7 +44,7 @@ class NPromise{
 
     resolve = (value) => {
         if(value === this){
-            this.reject(new TypeError('damei'))
+            this.reject(new TypeError('can not resolve itself'))
         }
 
         if(this.status === PENDING){
