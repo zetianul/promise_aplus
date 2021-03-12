@@ -42,11 +42,14 @@ class NPromise{
     }
 
 
+    // when resolving x
+    // if x is a promise, pass resolve to x.then
+    // if x is a thenable , call x.then with resolve and reject
+    // otherwise change the status of this promise and call the callback
     resolve = (value) => {
         if(value === this){
             this.reject(new TypeError('can not resolve itself'))
         }
-
         if(this.status === PENDING){
             if(value instanceof NPromise){
                 value.then(this.resolve, this.reject)
@@ -56,6 +59,9 @@ class NPromise{
                     try{
                         then = value.then;
                         if(typeof then === 'function'){
+                            // resolve 和 reject只能调用一次
+                            // resolve and reject can only be called once
+                            // once resolve or reject is called, ignore the rest calls
                             let resolved = false;
                             let rejected = false;
                             try{
